@@ -1,0 +1,140 @@
+/* ── DigitalHuman — Retro pilot ───────────────────── */
+
+.digital-human {
+  position: fixed;
+  z-index: 40;
+  right: 420px;
+  bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.3s, opacity 0.3s;
+  opacity: 0.92;
+}
+
+.digital-human:hover {
+  transform: scale(1.08);
+  opacity: 1;
+}
+
+.dh-body {
+  width: 140px;
+  height: 140px;
+  filter: drop-shadow(0 4px 18px rgba(96, 165, 250, 0.25));
+  transition: filter 0.3s;
+}
+
+.dh-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+}
+
+/* Badge for the part currently being explained (bubble above the digital human's head) */
+.dh-speaking-badge {
+  position: absolute;
+  bottom: calc(100% + 10px);
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 7px 16px;
+  border-radius: 18px;
+  background: rgba(30, 58, 95, 0.95);
+  border: 1px solid #4aa8ff;
+  color: #8fd0ff;
+  font-size: 14px;
+  font-weight: 600;
+  white-space: nowrap;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 18px rgba(74, 168, 255, 0.35);
+  animation: badgePop 0.2s ease-out;
+}
+
+@keyframes badgePop {
+  from { opacity: 0; transform: translateX(-50%) translateY(6px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+/* Status indicator */
+.dh-indicator {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 12px;
+  background: rgba(15, 17, 23, 0.85);
+  backdrop-filter: blur(8px);
+  border: 1px solid #2a2d37;
+}
+
+.dh-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #4ade80;
+  box-shadow: 0 0 6px rgba(74, 222, 128, 0.5);
+}
+
+.dh-dot--listen {
+  background: #f59e0b;
+  box-shadow: 0 0 6px rgba(245, 158, 11, 0.5);
+  animation: dotPulse 0.8s ease-in-out infinite alternate;
+}
+
+@keyframes dotPulse {
+  from { box-shadow: 0 0 4px rgba(245, 158, 11, 0.3); }
+  to   { box-shadow: 0 0 12px rgba(245, 158, 11, 0.7); }
+}
+
+.dh-status-text {
+  font-size: 11px;
+  color: #aaa;
+  white-space: nowrap;
+}
+
+/* ── idle: breathing float ── */
+.dh-idle .dh-body {
+  animation: idleFloat 3s ease-in-out infinite;
+}
+
+@keyframes idleFloat {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50%      { transform: translateY(-8px) scale(1.03); }
+}
+
+/* ── speaking: bounce + halo pulse ── */
+.dh-speaking .dh-body {
+  animation: speakBounce 0.4s ease-in-out infinite alternate;
+  filter: drop-shadow(0 4px 24px rgba(96, 165, 250, 0.55));
+}
+
+@keyframes speakBounce {
+  0%  { transform: translateY(0) rotate(-1deg); }
+  50% { transform: translateY(-4px) rotate(0deg); }
+  100%{ transform: translateY(-8px) rotate(1deg); }
+}
+
+/* ── listening: lean forward + slight sway ── */
+.dh-listening .dh-body {
+  animation: listenSway 2s ease-in-out infinite alternate;
+  filter: drop-shadow(0 4px 18px rgba(245, 158, 11, 0.3));
+}
+
+@keyframes listenSway {
+  from { transform: translateY(0) rotate(-3deg) scale(1); }
+  to   { transform: translateY(-3px) rotate(3deg) scale(1.02); }
+}
+
+@media (max-width: 768px) {
+  .digital-human {
+    right: 16px;
+    bottom: 160px;
+  }
+  .dh-body {
+    width: 90px;
+    height: 90px;
+  }
+}

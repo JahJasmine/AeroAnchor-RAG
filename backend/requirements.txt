@@ -1,0 +1,8 @@
+# backend (FastAPI + TTS + DeepSeek direct connection + calls rag_system)
+fastapi==0.115.6
+uvicorn==0.34.0
+pydantic==2.10.4
+python-dotenv==1.0.1
+edge-tts==7.2.8
+openai>=1.40.0
+httpx>=0.25.0

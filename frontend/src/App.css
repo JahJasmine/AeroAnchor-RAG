@@ -1,0 +1,285 @@
+/* ═══════════════════════════════════════════════════════════════════
+   Airplane Education — Main Layout
+   ═══════════════════════════════════════════════════════════════════ */
+
+.ae-root {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  overflow: hidden;
+}
+
+/* ── Top control bar ────────────────────────────── */
+
+.ae-top-bar {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  left: 8px;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.ae-model-selector {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 6px;
+  background: rgba(0,0,0,0.75);
+  backdrop-filter: blur(8px);
+  padding: 4px 10px;
+  border-radius: 8px;
+  border: 1px solid #3a3d47;
+}
+
+.ae-model-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.ae-speaking-badge {
+  padding: 6px 14px;
+  border-radius: 16px;
+  background: rgba(95, 30, 30, 0.95);
+  border: 1px solid #ff4444;
+  color: #ff8f8f;
+  font-size: 13px;
+  font-weight: 600;
+  max-width: 60vw;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 18px rgba(255, 68, 68, 0.35);
+  animation: badgePop 0.2s ease-out;
+}
+
+.ae-model-label {
+  font-size: 11px;
+  color: #888;
+}
+
+.ae-model-select {
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: rgba(0,0,0,0.8);
+  color: #ccc;
+  border: 1px solid #3a3d47;
+  font-size: 12px;
+  font-family: inherit;
+  cursor: pointer;
+  outline: none;
+}
+
+/* ── Voice control switches ── */
+
+.ae-voice-controls {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: rgba(0,0,0,0.75);
+  backdrop-filter: blur(8px);
+  padding: 6px 14px;
+  border-radius: 8px;
+  border: 1px solid #3a3d47;
+}
+
+.ae-voice-hint {
+  font-size: 11px;
+  color: #888;
+  background: rgba(0,0,0,0.75);
+  backdrop-filter: blur(8px);
+  padding: 4px 12px;
+  border-radius: 6px;
+  border: 1px solid #3a3d47;
+}
+
+.ae-voice-hint kbd {
+  display: inline-block;
+  padding: 0 5px;
+  border-radius: 3px;
+  background: #3a3d47;
+  color: #ccc;
+  font-size: 10px;
+  font-family: monospace;
+  border: 1px solid #555;
+  line-height: 1.6;
+}
+
+/* ── Left: 3D viewer ────────────────────────────── */
+
+.ae-viewer {
+  flex: 1;
+  position: relative;
+  min-width: 0;
+}
+
+/* ── Toolbar (floating over the 3D view) ────────── */
+
+.ae-toolbar {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  gap: 8px;
+  z-index: 10;
+  background: rgba(15, 17, 23, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid #2a2d37;
+  border-radius: 14px;
+  padding: 6px 10px;
+}
+
+.ae-toolbar button {
+  padding: 8px 16px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: #aaa;
+  font-size: 13px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.ae-toolbar button:hover {
+  background: #262a35;
+  color: #e4e4e7;
+}
+
+.ae-toolbar button.active {
+  background: #1e3a5f;
+  color: #60a5fa;
+  border-color: #3b82f6;
+}
+
+.ae-toolbar .divider {
+  width: 1px;
+  background: #2a2d37;
+  margin: 2px 4px;
+}
+
+/* ── Parts list (floating on the left) ──────────── */
+
+.ae-parts-list {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  max-height: 60vh;
+  overflow-y: auto;
+}
+
+.ae-part-chip {
+  padding: 6px 14px;
+  border-radius: 20px;
+  border: 1px solid #2a2d37;
+  background: rgba(15, 17, 23, 0.8);
+  backdrop-filter: blur(8px);
+  color: #aaa;
+  font-size: 12px;
+  font-family: inherit;
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+  text-align: left;
+}
+
+.ae-part-chip:hover {
+  background: rgba(38, 42, 53, 0.9);
+  color: #e4e4e7;
+}
+
+.ae-part-chip.selected {
+  background: rgba(59, 130, 246, 0.22);
+  color: #60a5fa;
+  border-color: #3b82f6;
+}
+
+/* ── Right: chat panel ──────────────────────────── */
+
+.ae-chat {
+  width: 400px;
+  flex-shrink: 0;
+  height: 100vh;
+}
+
+/* ── Responsive ─────────────────────────────────── */
+
+@media (max-width: 768px) {
+  .ae-root {
+    flex-direction: column;
+  }
+  .ae-viewer {
+    height: 50vh;
+  }
+  .ae-chat {
+    width: 100%;
+    height: 50vh;
+  }
+  .ae-voice-controls {
+    gap: 8px;
+    padding: 4px 10px;
+  }
+}
+
+/* ── Recording indicator dot animation ── */
+
+.ae-rec-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #f59e0b;
+  animation: recPulse 0.8s ease-in-out infinite alternate;
+  flex-shrink: 0;
+}
+
+@keyframes recPulse {
+  from { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.4); }
+  to   { box-shadow: 0 0 0 6px rgba(245, 158, 11, 0); }
+}
+
+/* Processing spinner animation */
+.ae-proc-spinner {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid rgba(96, 165, 250, 0.2);
+  border-top-color: #60a5fa;
+  animation: procSpin 0.6s linear infinite;
+  flex-shrink: 0;
+}
+
+@keyframes procSpin {
+  to { transform: rotate(360deg); }
+}
+
+/* Typewriter cursor */
+.ae-type-cursor {
+  display: inline-block;
+  width: 2px;
+  height: 1em;
+  background: #60a5fa;
+  margin-left: 1px;
+  vertical-align: text-bottom;
+  border-radius: 1px;
+  animation: cursorBlink 0.6s ease-in-out infinite alternate;
+}
+
+@keyframes cursorBlink {
+  from { opacity: 1; }
+  to   { opacity: 0; }
+}

@@ -1,0 +1,135 @@
+# config.yaml
+llm:
+  # ═══════════════════════════════════════════
+  # 🔧 Change the provider value here to switch:
+  #    "deepseek"  → use DeepSeek
+  #    "openai"    → use ChatGPT (Beiyang relay)
+  # ═══════════════════════════════════════════
+  provider: "deepseek"  # <--- change here to switch
+  #provider: "openai"
+
+  # ========== DeepSeek config ==========
+  # The api_key can also be set via the shared root .env (DEEPSEEK_API_KEY),
+  # which takes precedence over the value below.
+  deepseek:
+    api_key: "YOUR_API_KEY_HERE"
+    base_url: "https://api.deepseek.com"
+    model: "deepseek-reasoner"
+    temperature: 0.1
+    max_tokens: 2000
+
+  # ========== OpenAI config ==========
+  openai:
+    #api_key: "YOUR_API_KEY_HERE"
+    #base_url: "http://api.tsbys.com"
+    api_key: "YOUR_API_KEY_HERE"
+    base_url: "https://api.nonelinear.com"
+    model: "gpt-5.5"
+    temperature: 0.3
+    max_tokens: 2000
+
+data:
+  root_dir: "./data"
+  raw_documents: "raw_documents"
+  vector_stores: "vector_stores"
+  processed: "processed"
+  logs: "logs"
+
+chromadb:
+  persist_directory: "./data/vector_stores"
+  collection_prefix: "rag_"
+
+# Supported aircraft types
+aircraft_types: ["c172p"]
+
+# RAG instance config
+rag_instances:
+  rag_aircraft_params:
+    document_groups: ["aircraft_params"]
+    documents: ["#1 aircraft parameters", "#2 V-speeds", "#3 flight limits", "#12 redlines"]
+    agents: ["safety_agent", "operation_agent", "student_agent"]
+
+  rag_checklists:
+    document_groups: ["checklists"]
+    documents: ["#8 normal checklist", "#9 abnormal checklist", "#10 memory items", "#11 emergency procedures"]
+    agents: ["operation_agent", "compliance_agent"]
+
+  rag_regulations:
+    document_groups: ["regulations"]
+    documents: ["#23 regulations", "#24 regulatory interpretation"]
+    agents: ["compliance_agent"]
+
+  rag_acs:
+    document_groups: ["acs"]
+    documents: ["#16 subject dimensions", "#17 rating levels", "#18 teaching points", "#19 judging rules", "#21 assessment template", "#30 deduction rules"]
+    agents: ["student_agent", "compliance_agent"]
+
+  rag_components:
+    document_groups: ["components"]
+    documents: ["#26 component hierarchy index"]
+    agents: ["interact_agent"]
+
+  rag_manipulation:
+    document_groups: ["manipulation"]
+    documents: ["#4 control mapping", "#5 atomic actions", "#27 control principles"]
+    agents: ["operation_agent", "interact_agent"]
+
+  rag_performance:
+    document_groups: ["performance"]
+    documents: ["#1 performance section", "#3 envelope data"]
+    agents: ["safety_agent", "operation_agent"]
+
+  rag_emergency:
+    document_groups: ["emergency"]
+    documents: ["emergency procedures in #9/#10/#11"]
+    agents: ["safety_agent", "compliance_agent"]
+
+  rag_general:
+    document_groups: ["general"]
+    documents: ["#14 weather scenarios", "#25 licensing requirements"]
+    agents: ["student_agent", "operation_agent"]
+
+  # General flight manual
+  rag_flight_manual:
+    document_groups: ["flight_manual"]  # must match the directory name exactly
+    documents: ["FAA flight manual", "aeronautical knowledge handbook", "instrument flying handbook"]
+    agents: ["operation_agent", "student_agent", "interact_agent"]
+    description: "General flight manual, covering flight principles, control techniques, instrument flying, etc."
+
+  # Ground crew knowledge
+  rag_ground_crew:
+    document_groups: ["ground_crew"]  # must match the directory name exactly
+    documents: ["ground crew operations guide", "airport operations regulations", "ground safety handbook"]
+    agents: ["operation_agent", "compliance_agent", "student_agent"]
+    description: "Ground crew operations and airport operations knowledge"
+
+agents:
+  safety_agent:
+    name: "Safety Agent"
+    rag_instances: ["rag_aircraft_params", "rag_performance", "rag_emergency"]
+    enabled: true
+
+  operation_agent:
+    name: "Operations Agent"
+    rag_instances: ["rag_checklists", "rag_manipulation", "rag_general", "rag_flight_manual"]
+    enabled: true
+
+  compliance_agent:
+    name: "Compliance Agent"
+    rag_instances: ["rag_checklists", "rag_regulations", "rag_acs", "rag_ground_crew"]
+    enabled: true
+
+  student_agent:
+    name: "Student Agent"
+    rag_instances: ["rag_acs", "rag_general", "rag_flight_manual", "rag_ground_crew"]
+    enabled: true
+
+  interact_agent:
+    name: "3D Interaction Agent"
+    rag_instances: ["rag_components", "rag_manipulation", "rag_flight_manual"]
+    enabled: true
+
+logging:
+  level: INFO
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "./data/logs/system.log"
